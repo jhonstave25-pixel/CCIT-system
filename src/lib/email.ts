@@ -53,7 +53,7 @@ export async function sendVerificationEmail(to: string, url: string) {
               <a href="${url}" style="color: #667eea;">${url}</a>
             </p>
             <p style="font-size: 14px; color: #666;">
-              This link will expire in 10 minutes. If you didn't request this email, you can safely ignore it.
+              This link will expire in 10 minutes. If you didn&apos;t request this email, you can safely ignore it.
             </p>
           </div>
           <div style="text-align: center; margin-top: 20px; color: #999; font-size: 12px;">
@@ -95,9 +95,9 @@ export async function sendWelcomeEmail(to: string, name: string) {
           <div style="background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px;">
             <h2 style="color: #667eea;">Hello ${name}! 👋</h2>
             <p>
-              Welcome to the Alumni Management System! We're excited to have you as part of our community.
+              Welcome to the Alumni Management System! We&apos;re excited to have you as part of our community.
             </p>
-            <p>Here's what you can do now:</p>
+            <p>Here&apos;s what you can do now:</p>
             <ul>
               <li>Complete your profile with your academic and professional information</li>
               <li>Connect with fellow alumni from your batch</li>
@@ -387,7 +387,7 @@ export async function sendOTPEmail(
               <h1 style="color: #667eea; font-size: 48px; letter-spacing: 10px; margin: 0; font-family: 'Courier New', monospace;">${code}</h1>
             </div>
             <p style="font-size: 14px; color: #666;">
-              This code will expire in 10 minutes. If you didn't request this code, please ignore this email.
+              This code will expire in 10 minutes. If you didn&apos;t request this code, please ignore this email.
             </p>
             ${note ? `<p style="font-size: 14px; color: #667eea; font-weight: bold;">${note}</p>` : ''}
             <p style="font-size: 14px; color: #666;">
@@ -400,7 +400,7 @@ export async function sendOTPEmail(
         </body>
       </html>
     `,
-    text: `${title}\n\n${message}\n\nYour OTP code is: ${code}\n\nThis code will expire in 10 minutes. If you didn't request this code, please ignore this email.`,
+  text: `${title}\n\n${message}\n\nYour OTP code is: ${code}\n\nThis code will expire in 10 minutes. If you didn&apos;t request this code, please ignore this email.`,
   }
 
   try {
@@ -465,7 +465,7 @@ export async function sendPasswordResetEmail(to: string, resetUrl: string, otpCo
               </a>
             </div>
             <p style="font-size: 14px; color: #666;">
-              If you didn't request a password reset, please ignore this email. Your password will remain unchanged.
+              If you didn&apos;t request a password reset, please ignore this email. Your password will remain unchanged.
             </p>
           </div>
           <div style="text-align: center; margin-top: 20px; color: #999; font-size: 12px;">
@@ -474,7 +474,7 @@ export async function sendPasswordResetEmail(to: string, resetUrl: string, otpCo
         </body>
       </html>
     `,
-    text: `Password Reset\n\nWe received a request to reset your password.\n\nYour reset code is: ${otpCode}\n\nUse this code to reset your password. This code will expire in 10 minutes.\n\nReset link: ${resetUrl}\n\nIf you didn't request a password reset, please ignore this email.`,
+  text: `Password Reset\n\nWe received a request to reset your password.\n\nYour reset code is: ${otpCode}\n\nUse this code to reset your password. This code will expire in 10 minutes.\n\nReset link: ${resetUrl}\n\nIf you didn&apos;t request a password reset, please ignore this email.`,
   }
 
   try {

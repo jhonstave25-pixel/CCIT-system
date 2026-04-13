@@ -39,9 +39,9 @@ export function useJobChannel(
   // Subscribe to user-specific application updates (always call hook, pass null if no userId)
   const userAppChannel = userId ? `ccit:jobs:application:${userId}` : null
   const userStatusChannel = userId ? `ccit:jobs:application:${userId}` : null
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+  // Call hooks unconditionally with possibly-null channel names; the underlying
+  // `useAblyChannel` implementation safely ignores null channel names.
   useAblyChannel(userAppChannel, "job:application", onUpdate)
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   useAblyChannel(userStatusChannel, "job:status", onUpdate)
 }
 
@@ -72,9 +72,9 @@ export function useFeedChannel(
   // Subscribe to batch-specific feed (always call hook, pass null if no batchYear)
   const batchPostChannel = batchYear ? `ccit:feed:alumni:${batchYear}` : null
   const batchAnnounceChannel = batchYear ? `ccit:feed:alumni:${batchYear}` : null
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+  // Call hooks unconditionally with possibly-null channel names; the hook
+  // implementation handles nulls internally.
   useAblyChannel(batchPostChannel, "post", onUpdate)
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   useAblyChannel(batchAnnounceChannel, "announcement", onUpdate)
 }
 
@@ -87,7 +87,7 @@ export function useNotificationChannel(
 ) {
   // Always call hook, pass null if no userId - hook handles null internally
   const notifChannel = userId ? `ccit:notifications:${userId}` : null
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+  // Call hook unconditionally; underlying hook handles null channel names.
   useAblyChannel(notifChannel, "notification:new", onNotification)
 }
 

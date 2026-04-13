@@ -108,7 +108,7 @@ export async function createAlumniAccount(data: {
 
     // Publish real-time user creation event
     try {
-      const { publishToAblyChannel, ABLY_CHANNELS, ABLY_EVENTS } = await import("@/lib/ably/rest")
+      const { publishToAblyChannel, ABLY_CHANNELS, ABLY_EVENTS } = await import("@/lib/ably")
       await publishToAblyChannel({
         channelName: ABLY_CHANNELS.USERS_UPDATE,
         eventName: ABLY_EVENTS.USER_CREATED,

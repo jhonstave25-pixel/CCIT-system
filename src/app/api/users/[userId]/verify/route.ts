@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { NextResponse } from "next/server"
-import { publishToAblyChannel, ABLY_CHANNELS, ABLY_EVENTS } from "@/lib/ably/rest"
+import { publishToAblyChannel, ABLY_CHANNELS, ABLY_EVENTS } from "@/lib/ably"
 import type { RecordUpdatePayload } from "@/lib/ably/types"
 
 export async function POST(

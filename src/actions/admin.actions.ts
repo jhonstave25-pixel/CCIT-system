@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma"
 import { sendOTP } from "@/lib/otp"
 import { revalidatePath } from "next/cache"
 import { auth } from "@/lib/auth"
-import { publishToAblyChannel, ABLY_CHANNELS, ABLY_EVENTS } from "@/lib/ably/rest"
+import { publishToAblyChannel, ABLY_CHANNELS, ABLY_EVENTS } from "@/lib/ably"
 
 export async function createUser(data: {
   name: string

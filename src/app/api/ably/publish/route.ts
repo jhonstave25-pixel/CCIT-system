@@ -6,7 +6,7 @@
 
 import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
-import { publishToAblyChannel } from "@/lib/ably/rest"
+import { publishToAblyChannel } from "@/lib/ably"
 import { PublishOptions } from "@/lib/ably/types"
 
 export async function POST(req: NextRequest) {
