@@ -133,7 +133,7 @@ export function EventDetailClient({
           <div className="flex items-center gap-3">
             <Badge className="bg-green-500/20 border-green-300/30 text-green-200 flex items-center gap-2">
               <CheckCircle className="w-4 h-4" />
-              You're attending
+              You&apos;re attending
             </Badge>
             {!isPastEvent && (
               <Button
@@ -151,7 +151,7 @@ export function EventDetailClient({
           <div className="flex items-center gap-3">
             <Badge className="bg-red-500/20 border-red-300/30 text-red-200 flex items-center gap-2">
               <XCircle className="w-4 h-4" />
-              You're not attending
+              You&apos;re not attending
             </Badge>
             {!isPastEvent && (
               <Button
@@ -200,7 +200,7 @@ export function EventDetailClient({
           <DialogHeader>
             <DialogTitle>Not Attending</DialogTitle>
             <DialogDescription className="text-white/70">
-              Let us know why you won't be able to attend (optional).
+              Let us know why you won&apos;t be able to attend (optional).
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">

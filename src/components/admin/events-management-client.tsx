@@ -186,7 +186,7 @@ export function EventsManagementClient({ events: initialEvents }: EventsManageme
       <div className="overflow-hidden rounded-2xl border border-white/15 bg-white/5">
         {initialEvents.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-white/60">No events yet. Click "New Event" to create your first event.</p>
+            <p className="text-white/60">No events yet. Click &quot;New Event&quot; to create your first event.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">

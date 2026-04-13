@@ -126,7 +126,7 @@ export function PendingConnectionsList({ requests, currentUserId }: PendingConne
 
               {message && (
                 <div className="bg-white/5 rounded-lg p-3 text-sm text-white/80 italic">
-                  "{message}"
+                  &quot;{message}&quot;
                 </div>
               )}
 

@@ -138,7 +138,7 @@ export default function BlockedUsersPage() {
               <h1 className="text-4xl font-bold">Blocked Users</h1>
             </div>
             <p className="text-white/70 mt-1">
-              Manage users you've blocked from messaging you
+              Manage users you&apos;ve blocked from messaging you
             </p>
           </div>
         </div>
@@ -252,7 +252,7 @@ export default function BlockedUsersPage() {
               <Shield className="w-16 h-16 mx-auto mb-4 text-white/40" />
               <p className="text-lg text-white/80">No blocked users</p>
               <p className="text-sm text-white/60 mt-2 mb-6">
-                When you block someone, you'll see them here. You can block a user from their profile or from a chat conversation.
+                When you block someone, you&apos;ll see them here. You can block a user from their profile or from a chat conversation.
               </p>
               <Link href="/chat">
                 <Button className="bg-gradient-to-r from-indigo-500 to-violet-600 text-white">

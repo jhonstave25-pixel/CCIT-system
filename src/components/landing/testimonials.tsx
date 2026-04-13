@@ -53,7 +53,7 @@ export default function Testimonials() {
             <Card className="h-full rounded-xl border-border/30 bg-card/40 border-white/10 bg-white/5">
               <CardContent className="p-6 space-y-4">
                 <MessageSquare className="w-4 h-4 text-indigo-400" />
-                <p className="text-sm leading-relaxed text-white/80">"{q.text}"</p>
+                <p className="text-sm leading-relaxed text-white/80">&quot;{q.text}&quot;</p>
                 <div className="flex items-center gap-3 pt-2">
                   <Avatar className="h-8 w-8">
                     <AvatarFallback className="bg-indigo-500/20 text-indigo-300">{q.initials}</AvatarFallback>

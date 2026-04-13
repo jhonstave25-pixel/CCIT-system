@@ -62,7 +62,7 @@ export default function AboutPage() {
               </div>
 
               <p className="text-white/90 leading-relaxed text-lg">
-                In short, under Dr. Baroy's leadership, CCIT-Connect turns the end of formal study into a continuing relationship—supporting careers, community projects, and data-informed program improvement while preserving the authenticity of CCIT's alumni network.
+                In short, under Dr. Baroy&apos;s leadership, CCIT-Connect turns the end of formal study into a continuing relationship—supporting careers, community projects, and data-informed program improvement while preserving the authenticity of CCIT&apos;s alumni network.
               </p>
             </div>
           </CardContent>
@@ -128,7 +128,7 @@ export default function AboutPage() {
         <div className="text-center space-y-4 pt-8">
           <h2 className="text-2xl font-semibold text-white">Join the CCIT-Connect Community</h2>
           <p className="text-white/70">
-            Whether you're a graduate, employer, or current student, CCIT-Connect is here to support your journey.
+            Whether you&apos;re a graduate, employer, or current student, CCIT-Connect is here to support your journey.
           </p>
           <div className="flex items-center justify-center gap-4 pt-4">
             <Button asChild className="bg-gradient-to-r from-indigo-500 to-violet-600 text-white hover:opacity-90">

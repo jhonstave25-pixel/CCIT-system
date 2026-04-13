@@ -209,7 +209,7 @@ export function GalleryManagementClient({
       <div className="overflow-hidden rounded-2xl border border-white/15 bg-white/5">
         {initialGalleries.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-white/60">No galleries yet. Click "New Gallery" to create your first gallery.</p>
+            <p className="text-white/60">No galleries yet. Click &quot;New Gallery&quot; to create your first gallery.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">

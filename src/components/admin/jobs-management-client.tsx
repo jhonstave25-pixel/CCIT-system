@@ -175,7 +175,7 @@ export function JobsManagementClient({ jobs: initialJobs }: JobsManagementClient
       <div className="overflow-hidden rounded-2xl border border-white/15 bg-white/5">
         {initialJobs.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-white/60">No job postings yet. Click "New Job" to create your first posting.</p>
+            <p className="text-white/60">No job postings yet. Click &quot;New Job&quot; to create your first posting.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">

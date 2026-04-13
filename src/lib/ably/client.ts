@@ -114,13 +114,13 @@ export function useAblyClient(): {
 
 /**
  * Hook to subscribe to an Ably channel with automatic cleanup
- * @param channelName - The name of the channel to subscribe to
+ * @param channelName - The name of the channel to subscribe to (null to skip subscription)
  * @param eventName - The event name to listen for
  * @param callback - Callback function to handle messages
  * @param onError - Optional error handler
  */
 export function useAblyChannel(
-  channelName: string,
+  channelName: string | null,
   eventName: string,
   callback: (message: any) => void,
   onError?: (error: Error) => void

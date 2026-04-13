@@ -313,13 +313,13 @@ export function EventsClient({ events: initialEvents }: EventsClientProps) {
                         {registered && (
                           <div className="flex items-center gap-2 text-sm text-indigo-300 mt-2">
                             <CheckCircle className="h-4 w-4" />
-                            <span>You're attending</span>
+                            <span>You&apos;re attending</span>
                           </div>
                         )}
                         {declined && !registered && (
                           <div className="flex items-center gap-2 text-sm text-orange-300 mt-2">
                             <XCircle className="h-4 w-4" />
-                            <span>You're not attending</span>
+                            <span>You&apos;re not attending</span>
                           </div>
                         )}
                         <div className="flex gap-2 mt-3">
@@ -387,7 +387,7 @@ export function EventsClient({ events: initialEvents }: EventsClientProps) {
           <DialogHeader>
             <DialogTitle className="text-white">Not Attending</DialogTitle>
             <DialogDescription className="text-white/70">
-              We'd love to know why you won't be able to attend {selectedEvent?.title}. Your feedback helps us improve future events.
+              We&apos;d love to know why you won&apos;t be able to attend {selectedEvent?.title}. Your feedback helps us improve future events.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">

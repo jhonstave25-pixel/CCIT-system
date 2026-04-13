@@ -212,7 +212,7 @@ export default function LoginPage() {
         <Separator className="my-6 bg-white/20" />
 
         <p className="text-center text-sm text-white/80">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link
             href="/register"
             className="text-indigo-300 hover:text-indigo-200 font-medium hover:underline transition-colors"

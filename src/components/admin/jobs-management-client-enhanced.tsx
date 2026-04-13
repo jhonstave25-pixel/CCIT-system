@@ -396,7 +396,7 @@ export function JobsManagementClientEnhanced() {
           </div>
         ) : jobs.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-white/60">No job postings found. Click "New Job" to create your first posting.</p>
+            <p className="text-white/60">No job postings found. Click &quot;New Job&quot; to create your first posting.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">

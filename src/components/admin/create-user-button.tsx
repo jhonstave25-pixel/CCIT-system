@@ -24,15 +24,15 @@ import { createUser } from "@/actions/admin.actions"
 
 export function CreateUserButton() {
   const { data: session } = useSession()
+  const [open, setOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
   
   // Only show for ADMIN
   if (!session || session.user.role !== "ADMIN") {
     return null
   }
-  const [open, setOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState("")
-  const [success, setSuccess] = useState("")
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()

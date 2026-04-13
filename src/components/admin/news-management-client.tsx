@@ -123,7 +123,7 @@ export function NewsManagementClient({ posts: initialPosts }: NewsManagementClie
       <div className="overflow-hidden rounded-2xl border border-white/15 bg-white/5">
         {initialPosts.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-white/60">No news articles yet. Click "New Article" to create your first post.</p>
+            <p className="text-white/60">No news articles yet. Click &quot;New Article&quot; to create your first post.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
