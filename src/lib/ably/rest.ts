@@ -6,6 +6,9 @@
 import Ably from "ably"
 import { PublishOptions, AblyPayload } from "./types"
 
+// Re-export channel and event constants for convenience
+export { ABLY_CHANNELS, ABLY_EVENTS } from "./types"
+
 let ablyRestClient: Ably.Rest | null = null
 let cachedApiKey: string | null = null
 
