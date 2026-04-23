@@ -6,6 +6,7 @@ import crypto from "crypto"
 import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
+import { sendProfileUpdatedEmail } from "@/lib/email"
 
 const PROFILE_UPLOAD_DIR = path.join(process.cwd(), "public", "uploads", "profile")
 
@@ -77,10 +78,20 @@ export async function updateProfileImage(formData: FormData) {
     const imageUrl = `/uploads/profile/${fileName}`
 
     // Update user image in database
-    await prisma.user.update({
+    const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: { image: imageUrl },
     })
+
+    // Send email notification
+    if (updatedUser.email && updatedUser.name) {
+      try {
+        await sendProfileUpdatedEmail(updatedUser.email, updatedUser.name, "image")
+        console.log(`Profile image update email sent to ${updatedUser.email}`)
+      } catch (emailError) {
+        console.warn("Failed to send profile image update email:", emailError)
+      }
+    }
 
     revalidatePath("/profile")
     revalidatePath("/dashboard")

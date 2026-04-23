@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -42,7 +42,7 @@ export default function JobPipeline({ jobId }: JobPipelineProps) {
   const [applicants, setApplicants] = useState<Applicant[]>([])
   const [loading, setLoading] = useState(true)
 
-  const fetchApplicants = async () => {
+  const fetchApplicants = useCallback(async () => {
     setLoading(true)
     try {
       const response = await fetch(`/api/jobs/${jobId}/applicants`)
@@ -55,11 +55,11 @@ export default function JobPipeline({ jobId }: JobPipelineProps) {
     } finally {
       setLoading(false)
     }
-  }
+  }, [jobId])
 
   useEffect(() => {
     fetchApplicants()
-  }, [jobId])
+  }, [fetchApplicants])
 
   const [selectedApplicant, setSelectedApplicant] = useState<Applicant | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)

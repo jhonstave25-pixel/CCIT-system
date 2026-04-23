@@ -5,7 +5,7 @@ import { getMessages } from "@/app/(dashboard)/messages/_actions"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { useSession } from "next-auth/react"
-import { Send, Check, X } from "lucide-react"
+import { Send, Check, X, Paperclip, Camera, Image } from "lucide-react"
 import { format } from "date-fns"
 import { useToast } from "@/hooks/use-toast"
 import { useAblyChannel, ABLY_CHANNELS, ABLY_EVENTS } from "@/lib/ably"
@@ -352,7 +352,7 @@ export default function ChatWindow({ conversationId }: { conversationId: string 
               value={text}
               onChange={(e) => setText(e.target.value)}
               placeholder="Type a message..."
-              className="min-h-[44px] max-h-32 bg-white/10 dark:bg-indigo-900/30 text-white placeholder:text-white/50 border-white/20 resize-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+              className="min-h-[44px] max-h-32 bg-white/10 dark:bg-indigo-900/30 text-white placeholder:text-white/50 border-white/20 resize-none focus-visible:ring-2 focus-visible:ring-indigo-400 flex-1"
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault()
@@ -361,13 +361,46 @@ export default function ChatWindow({ conversationId }: { conversationId: string 
               }}
               rows={1}
             />
-            <Button
-              type="submit"
-              disabled={isLoading || !text.trim()}
-              className="shrink-0 h-[44px] w-[44px] p-0 bg-gradient-to-r from-indigo-500 to-violet-600 text-white hover:opacity-90 disabled:opacity-50 rounded-full"
-            >
-              <Send className="w-4 h-4" />
-            </Button>
+            <div className="flex gap-2 items-center">
+              {/* File Upload Button */}
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="h-[40px] w-[40px] p-0 bg-white/10 text-white border border-white/20 hover:bg-white/20 hover:border-white/30 hover:scale-105 rounded-full transition-all duration-200 shadow-sm"
+                title="Attach file"
+              >
+                <Paperclip className="w-5 h-5" />
+              </Button>
+              {/* Camera Button */}
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="h-[40px] w-[40px] p-0 bg-white/10 text-white border border-white/20 hover:bg-white/20 hover:border-white/30 hover:scale-105 rounded-full transition-all duration-200 shadow-sm"
+                title="Take photo"
+              >
+                <Camera className="w-5 h-5" />
+              </Button>
+              {/* Picture Upload Button */}
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="h-[40px] w-[40px] p-0 bg-white/10 text-white border border-white/20 hover:bg-white/20 hover:border-white/30 hover:scale-105 rounded-full transition-all duration-200 shadow-sm"
+                title="Upload image"
+              >
+                <Image className="w-5 h-5" />
+              </Button>
+              {/* Send Button */}
+              <Button
+                type="submit"
+                disabled={isLoading || !text.trim()}
+                className="shrink-0 h-[44px] w-[44px] p-0 bg-gradient-to-r from-indigo-500 to-violet-600 text-white hover:from-indigo-400 hover:to-violet-500 hover:scale-105 hover:shadow-lg disabled:opacity-50 rounded-full transition-all duration-200"
+              >
+                <Send className="w-5 h-5" />
+              </Button>
+            </div>
           </div>
         </form>
       )}

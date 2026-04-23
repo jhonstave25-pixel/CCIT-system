@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import {
   Dialog,
   DialogContent,
@@ -49,18 +49,7 @@ export function RecommendationModal({
   const [message, setMessage] = useState("")
   const [submitting, setSubmitting] = useState(false)
 
-  useEffect(() => {
-    if (open && searchQuery.length >= 2) {
-      const timeoutId = setTimeout(() => {
-        searchAlumni()
-      }, 300)
-      return () => clearTimeout(timeoutId)
-    } else if (open && searchQuery.length === 0) {
-      setAlumni([])
-    }
-  }, [searchQuery, open])
-
-  async function searchAlumni() {
+  const searchAlumni = useCallback(async () => {
     setLoading(true)
     try {
       const params = new URLSearchParams({
@@ -83,7 +72,20 @@ export function RecommendationModal({
     } finally {
       setLoading(false)
     }
-  }
+  }, [searchQuery, toast])
+
+  useEffect(() => {
+    if (open && searchQuery.length >= 2) {
+      const timeoutId = setTimeout(() => {
+        searchAlumni()
+      }, 300)
+      return () => clearTimeout(timeoutId)
+    } else if (open && searchQuery.length === 0) {
+      setAlumni([])
+    }
+  }, [searchQuery, open, searchAlumni])
+
+  
 
   async function handleSubmit() {
     if (!selectedAlumni) {

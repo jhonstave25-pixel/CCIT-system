@@ -31,22 +31,28 @@ export default async function AdminUsersPage({
     where.role = roleFilter
   }
 
-  const users = await prisma.user.findMany({
-    where,
-    include: {
-      profile: true,
-      _count: {
-        select: {
-          eventsCreated: true,
-          postsCreated: true,
-          jobsPosted: true,
+  const [users, accountRequests] = await Promise.all([
+    prisma.user.findMany({
+      where,
+      include: {
+        profile: true,
+        _count: {
+          select: {
+            eventsCreated: true,
+            postsCreated: true,
+            jobsPosted: true,
+          },
         },
       },
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  })
+      orderBy: {
+        createdAt: "desc",
+      },
+    }),
+    prisma.accountRequest.findMany({
+      where: { status: "PENDING" },
+      orderBy: { createdAt: "desc" },
+    }),
+  ])
 
   const stats = {
     total: await prisma.user.count(),
@@ -54,7 +60,8 @@ export default async function AdminUsersPage({
     faculty: await prisma.user.count({ where: { role: "FACULTY" } }),
     pendingFaculty: await prisma.user.count({ where: { role: "FACULTY", status: "PENDING" } }),
     admin: await prisma.user.count({ where: { role: "ADMIN" } }),
+    pendingAccountRequests: accountRequests.length,
   }
 
-  return <UserManagement users={users} stats={stats} />
+  return <UserManagement users={users} stats={stats} accountRequests={accountRequests} />
 }

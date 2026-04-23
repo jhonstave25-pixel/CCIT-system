@@ -132,7 +132,7 @@ export default function AboutPage() {
           </p>
           <div className="flex items-center justify-center gap-4 pt-4">
             <Button asChild className="bg-gradient-to-r from-indigo-500 to-violet-600 text-white hover:opacity-90">
-              <Link href="/register">Get Started</Link>
+              <Link href="/request-account">Get Started</Link>
             </Button>
             <Button asChild variant="outline" className="border-white/20 text-white hover:bg-white/10">
               <Link href="/login">Sign In</Link>

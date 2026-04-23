@@ -52,7 +52,17 @@ export function NewsManagementClient({ posts: initialPosts }: NewsManagementClie
 
   const postFields = [
     { name: "title", label: "Title", type: "text" as const, required: true, placeholder: "News article title" },
-    { name: "category", label: "Category", type: "text" as const, required: true, placeholder: "e.g., Announcements, Updates" },
+    { name: "category", label: "Category", type: "select" as const, required: true, options: [
+      { value: "Announcements", label: "Announcements" },
+      { value: "Updates", label: "Updates" },
+      { value: "Events", label: "Events" },
+      { value: "Alumni News", label: "Alumni News" },
+      { value: "Job Opportunities", label: "Job Opportunities" },
+      { value: "Achievements", label: "Achievements" },
+      { value: "Partnerships", label: "Partnerships" },
+      { value: "General", label: "General" },
+      { value: "Others", label: "Others" },
+    ]},
     { name: "excerpt", label: "Excerpt", type: "textarea" as const, placeholder: "Brief summary of the article..." },
     { name: "content", label: "Content", type: "textarea" as const, required: true, placeholder: "Full article content..." },
     { name: "sourceUrl", label: "Source URL (e.g., Facebook post link)", type: "text" as const, placeholder: "https://facebook.com/..." },

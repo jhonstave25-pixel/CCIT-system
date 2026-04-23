@@ -9,6 +9,7 @@ import { ThemeToggle } from "@/components/ui/theme-toggle"
 import {
   LayoutDashboard,
   Users,
+  UserPlus,
   Calendar,
   Newspaper,
   Briefcase,
@@ -111,7 +112,7 @@ export function AdminLayoutClient({
   }
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800 dark:from-slate-900 dark:via-indigo-950 dark:to-purple-950 text-white transition-colors">
+    <div className="flex min-h-screen bg-gradient-to-br from-indigo-600 to-purple-600 to-purple-800 dark:from-slate-900 dark:via-indigo-950 dark:to-purple-950 text-white transition-colors">
       {/* Mobile Overlay */}
       {mobileMenuOpen && (
         <div

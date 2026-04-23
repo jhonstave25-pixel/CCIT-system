@@ -1,6 +1,6 @@
 "use client"
 
-import { useTransition, useState, useRef, useCallback } from "react"
+import { useTransition, useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -27,7 +27,7 @@ import { useToast } from "@/hooks/use-toast"
 import { createAlumniAccount } from "@/actions/user.actions"
 import { getDashboardUrl } from "@/lib/redirects"
 import Link from "next/link"
-import { Eye } from "lucide-react"
+import { Eye, EyeOff } from "lucide-react"
 
 // Helper to split name into first and last
 function splitName(name: string): { firstName: string; lastName: string } {
@@ -41,6 +41,44 @@ function splitName(name: string): { firstName: string; lastName: string } {
   }
 }
 
+// List of blocked temp/fake email domains
+const BLOCKED_EMAIL_DOMAINS = [
+  "tempmail.com",
+  "temp-mail.com",
+  "fakeemail.com",
+  "throwaway.com",
+  "mailinator.com",
+  "guerrillamail.com",
+  "sharklasers.com",
+  "getairmail.com",
+  "10minutemail.com",
+  "yopmail.com",
+  "tempinbox.com",
+  "mailnesia.com",
+  "tempmailaddress.com",
+  "burnermail.io",
+  "disposable.com",
+  "trashmail.com",
+  "fakeinbox.com",
+  "tempemail.com",
+  "spamgourmet.com",
+  "mytrashmail.com",
+  "mailcatch.com",
+  "tempmailer.com",
+  "tempmail.net",
+  "tmpmail.org",
+  "throwawaymail.com",
+  "emailfake.com",
+  "tempmail.plus",
+  "tempm.com",
+  "mailtemp.com",
+  "tempimail.com",
+  "fakemail.net",
+  "mohmal.com",
+  "yandex.com",
+  "protonmail.com",
+]
+
 const registerSchema = z
   .object({
     name: z
@@ -48,10 +86,29 @@ const registerSchema = z
       .min(3, "Full name must be at least 3 characters")
       .max(120, "Full name must be at most 120 characters")
       .regex(/^[a-zA-Z\s-]+$/, "Name can only contain letters, spaces, and hyphens"),
-    email: z.string().email("Invalid email address"),
+    email: z
+      .string()
+      .email("Invalid email address")
+      .toLowerCase()
+      .refine(
+        (email) => email.endsWith("@gmail.com"),
+        {
+          message: "Only Gmail addresses (@gmail.com) are allowed",
+        }
+      )
+      .refine(
+        (email) => {
+          const domain = email.split("@")[1]
+          return !BLOCKED_EMAIL_DOMAINS.includes(domain)
+        },
+        {
+          message: "Temp or fake email addresses are not allowed",
+        }
+      ),
     password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string().min(8, "Please confirm your password"),
     role: z.enum(["ALUMNI", "FACULTY"]).default("ALUMNI"),
+    honeypot: z.string().optional(), // Hidden field for spam detection
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
@@ -74,36 +131,6 @@ export default function RegisterPage() {
   const [isPending, startTransition] = useTransition()
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const passwordTimerRef = useRef<NodeJS.Timeout | null>(null)
-  const confirmTimerRef = useRef<NodeJS.Timeout | null>(null)
-
-  const handlePasswordDown = useCallback(() => {
-    passwordTimerRef.current = setTimeout(() => {
-      setShowPassword(true)
-    }, 200)
-  }, [])
-
-  const handlePasswordUp = useCallback(() => {
-    if (passwordTimerRef.current) {
-      clearTimeout(passwordTimerRef.current)
-      passwordTimerRef.current = null
-    }
-    setShowPassword(false)
-  }, [])
-
-  const handleConfirmDown = useCallback(() => {
-    confirmTimerRef.current = setTimeout(() => {
-      setShowConfirmPassword(true)
-    }, 200)
-  }, [])
-
-  const handleConfirmUp = useCallback(() => {
-    if (confirmTimerRef.current) {
-      clearTimeout(confirmTimerRef.current)
-      confirmTimerRef.current = null
-    }
-    setShowConfirmPassword(false)
-  }, [])
 
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
@@ -113,6 +140,7 @@ export default function RegisterPage() {
       password: "",
       confirmPassword: "",
       role: "ALUMNI",
+      honeypot: "",
     },
   })
 
@@ -123,6 +151,7 @@ export default function RegisterPage() {
         email: values.email,
         password: values.password,
         role: values.role,
+        honeypot: values.honeypot,
       })
 
       if (result.success) {
@@ -207,18 +236,18 @@ export default function RegisterPage() {
                           disabled={isPending}
                           className="h-11 pr-12"
                         />
-                        <button
-                          type="button"
-                          onMouseDown={handlePasswordDown}
-                          onMouseUp={handlePasswordUp}
-                          onMouseLeave={handlePasswordUp}
-                          onTouchStart={handlePasswordDown}
-                          onTouchEnd={handlePasswordUp}
-                          className="absolute right-3 top-0 bottom-0 flex items-center text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors select-none"
-                          aria-label="Long press to show password"
+                        <div
+                          role="button"
+                          tabIndex={-1}
+                          onMouseDown={(e) => {
+                            e.preventDefault()
+                            setShowPassword(!showPassword)
+                          }}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors cursor-pointer select-none"
+                          aria-label={showPassword ? "Hide password" : "Show password"}
                         >
-                          <Eye className="h-5 w-5" />
-                        </button>
+                          {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                        </div>
                       </div>
                     </FormControl>
                     <p className="text-xs text-muted-foreground">Must be at least 8 characters long</p>
@@ -242,18 +271,18 @@ export default function RegisterPage() {
                           disabled={isPending}
                           className="h-11 pr-12"
                         />
-                        <button
-                          type="button"
-                          onMouseDown={handleConfirmDown}
-                          onMouseUp={handleConfirmUp}
-                          onMouseLeave={handleConfirmUp}
-                          onTouchStart={handleConfirmDown}
-                          onTouchEnd={handleConfirmUp}
-                          className="absolute right-3 top-0 bottom-0 flex items-center text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors select-none"
-                          aria-label="Long press to show password"
+                        <div
+                          role="button"
+                          tabIndex={-1}
+                          onMouseDown={(e) => {
+                            e.preventDefault()
+                            setShowConfirmPassword(!showConfirmPassword)
+                          }}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors cursor-pointer select-none"
+                          aria-label={showConfirmPassword ? "Hide password" : "Show password"}
                         >
-                          <Eye className="h-5 w-5" />
-                        </button>
+                          {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                        </div>
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -283,6 +312,25 @@ export default function RegisterPage() {
                       </SelectContent>
                     </Select>
                     <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Honeypot field - hidden from real users, visible to bots */}
+              <FormField
+                control={form.control}
+                name="honeypot"
+                render={({ field }) => (
+                  <FormItem className="absolute opacity-0 top-0 left-0 h-0 w-0 overflow-hidden">
+                    <FormLabel>Leave this empty</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        tabIndex={-1}
+                        autoComplete="off"
+                        aria-hidden="true"
+                      />
+                    </FormControl>
                   </FormItem>
                 )}
               />

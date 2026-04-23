@@ -4,9 +4,9 @@
 
 @layer base {
   :root {
-    /* CCIT CONNECT Theme - Based on Landing Page Design */
+    /* CCIT CONNECT Theme - Blue/Purple Color Scheme */
     /* Background colors (light mode) */
-    --background: 239 246 255; /* blue-50 */
+    --background: 255 255 255; /* white */
     --foreground: 17 24 39; /* gray-900 */
     
     /* Card colors */
@@ -17,70 +17,20 @@
     --popover: 255 255 255;
     --popover-foreground: 17 24 39;
     
-    /* Primary colors - Indigo to Purple gradient */
-    --primary: 99 102 241; /* indigo-500 (#6366f1) */
+    /* Primary colors - Indigo */
+    --primary: 79 70 229; /* indigo-600 (#4f46e5) */
     --primary-foreground: 255 255 255; /* white */
     
     /* Secondary colors */
     --secondary: 238 242 255; /* indigo-50 */
-    --secondary-foreground: 17 24 39; /* gray-900 */
+    --secondary-foreground: 49 46 129; /* indigo-900 */
     
     /* Muted colors */
-    --muted: 243 244 246; /* gray-100 */
+    --muted: 238 242 255; /* indigo-50 */
     --muted-foreground: 107 114 128; /* gray-500 */
     
     /* Accent colors */
-    --accent: 124 58 237; /* violet-600 (#7c3aed) */
-    --accent-foreground: 255 255 255;
-    
-    /* Destructive colors */
-    --destructive: 239 68 68; /* red-500 */
-    --destructive-foreground: 255 255 255;
-    
-    /* Border and input colors */
-    --border: 229 231 235; /* gray-200 */
-    --input: 229 231 235; /* gray-200 */
-    --ring: 99 102 241; /* indigo-500 */
-    
-    /* Chart colors */
-    --chart-1: 59 130 246; /* blue-500 */
-    --chart-2: 79 70 229; /* indigo-600 */
-    --chart-3: 147 51 234; /* purple-600 */
-    --chart-4: 168 85 247; /* purple-500 */
-    --chart-5: 124 58 237; /* violet-600 */
-    
-    /* Border radius */
-    --radius: 0.5rem;
-  }
-
-  .dark {
-    /* CCIT CONNECT Theme - Dark Mode */
-    /* Background colors (dark mode) */
-    --background: 3 7 18; /* gray-950 */
-    --foreground: 249 250 251; /* gray-100 */
-    
-    /* Card colors */
-    --card: 17 24 39; /* gray-900 */
-    --card-foreground: 249 250 251; /* gray-100 */
-    
-    /* Popover colors */
-    --popover: 17 24 39;
-    --popover-foreground: 249 250 251;
-    
-    /* Primary colors */
-    --primary: 99 102 241; /* indigo-500 */
-    --primary-foreground: 255 255 255;
-    
-    /* Secondary colors */
-    --secondary: 30 27 75; /* indigo-950 */
-    --secondary-foreground: 249 250 251;
-    
-    /* Muted colors */
-    --muted: 31 41 55; /* gray-800 */
-    --muted-foreground: 156 163 175; /* gray-400 */
-    
-    /* Accent colors */
-    --accent: 168 85 247; /* purple-500 */
+    --accent: 147 51 234; /* purple-600 */
     --accent-foreground: 255 255 255;
     
     /* Destructive colors */
@@ -88,16 +38,66 @@
     --destructive-foreground: 255 255 255;
     
     /* Border and input colors */
-    --border: 31 41 55; /* gray-800 */
-    --input: 31 41 55; /* gray-800 */
+    --border: 229 231 235; /* gray-200 */
+    --input: 229 231 235; /* gray-200 */
+    --ring: 79 70 229; /* indigo-600 */
+    
+    /* Chart colors - Blue/Purple variations */
+    --chart-1: 79 70 229; /* indigo-600 */
+    --chart-2: 147 51 234; /* purple-600 */
+    --chart-3: 99 102 241; /* indigo-500 */
+    --chart-4: 67 56 202; /* indigo-700 */
+    --chart-5: 55 48 163; /* indigo-800 */
+    
+    /* Border radius */
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    /* CCIT CONNECT Theme - Dark Mode Blue/Purple */
+    /* Background colors (dark mode) */
+    --background: 2 6 23; /* slate-950 */
+    --foreground: 226 232 240; /* slate-200 */
+    
+    /* Card colors */
+    --card: 15 23 42; /* slate-900 */
+    --card-foreground: 226 232 240; /* slate-200 */
+    
+    /* Popover colors */
+    --popover: 15 23 42;
+    --popover-foreground: 226 232 240;
+    
+    /* Primary colors - Indigo */
+    --primary: 99 102 241; /* indigo-500 */
+    --primary-foreground: 255 255 255;
+    
+    /* Secondary colors */
+    --secondary: 30 27 75; /* indigo-950 */
+    --secondary-foreground: 226 232 240;
+    
+    /* Muted colors */
+    --muted: 30 41 59; /* slate-800 */
+    --muted-foreground: 148 163 184; /* slate-400 */
+    
+    /* Accent colors */
+    --accent: 147 51 234; /* purple-600 */
+    --accent-foreground: 255 255 255;
+    
+    /* Destructive colors */
+    --destructive: 220 38 38; /* red-600 */
+    --destructive-foreground: 255 255 255;
+    
+    /* Border and input colors */
+    --border: 30 41 59; /* slate-800 */
+    --input: 30 41 59; /* slate-800 */
     --ring: 99 102 241; /* indigo-500 */
     
-    /* Chart colors */
-    --chart-1: 59 130 246; /* blue-500 */
-    --chart-2: 99 102 241; /* indigo-500 */
-    --chart-3: 168 85 247; /* purple-500 */
-    --chart-4: 192 132 252; /* purple-400 */
-    --chart-5: 124 58 237; /* violet-600 */
+    /* Chart colors - Blue/Purple variations */
+    --chart-1: 99 102 241; /* indigo-500 */
+    --chart-2: 147 51 234; /* purple-600 */
+    --chart-3: 79 70 229; /* indigo-600 */
+    --chart-4: 67 56 202; /* indigo-700 */
+    --chart-5: 220 38 38; /* red-600 */
   }
 }
 
@@ -167,9 +167,10 @@
   .dark input:-webkit-autofill:focus,
   .dark input:-webkit-autofill:active {
     -webkit-box-shadow: 0 0 0 1000px rgb(17 24 39) inset !important; /* gray-900 */
-    -webkit-text-fill-color: rgb(249 250 251) !important; /* gray-100 */
-    caret-color: rgb(249 250 251) !important;
+    -webkit-text-fill-color: rgb(255 255 255) !important; /* white */
+    caret-color: rgb(255 255 255) !important;
     background-color: rgb(17 24 39) !important;
+    color: white !important;
   }
 
   .dark textarea:-webkit-autofill,
@@ -177,9 +178,10 @@
   .dark textarea:-webkit-autofill:focus,
   .dark textarea:-webkit-autofill:active {
     -webkit-box-shadow: 0 0 0 1000px rgb(17 24 39) inset !important;
-    -webkit-text-fill-color: rgb(249 250 251) !important;
-    caret-color: rgb(249 250 251) !important;
+    -webkit-text-fill-color: rgb(255 255 255) !important;
+    caret-color: rgb(255 255 255) !important;
     background-color: rgb(17 24 39) !important;
+    color: white !important;
   }
 
   .dark select:-webkit-autofill,
@@ -187,9 +189,27 @@
   .dark select:-webkit-autofill:focus,
   .dark select:-webkit-autofill:active {
     -webkit-box-shadow: 0 0 0 1000px rgb(17 24 39) inset !important;
-    -webkit-text-fill-color: rgb(249 250 251) !important;
-    caret-color: rgb(249 250 251) !important;
+    -webkit-text-fill-color: rgb(255 255 255) !important;
+    caret-color: rgb(255 255 255) !important;
     background-color: rgb(17 24 39) !important;
+    color: white !important;
+  }
+
+  /* Force white text on form elements with dark backgrounds */
+  [class*="bg-white/10"] input,
+  [class*="bg-white/10"] textarea,
+  [class*="bg-white/10"] select {
+    color: white !important;
+    -webkit-text-fill-color: white !important;
+  }
+
+  /* Target Radix UI Select trigger with white text */
+  [data-radix-select-trigger] {
+    color: white !important;
+  }
+
+  [data-radix-select-value] {
+    color: white !important;
   }
 }
 

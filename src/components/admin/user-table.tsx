@@ -332,19 +332,20 @@ export function UserTable({ users: initialUsers }: { users: UserWithProfile[] })
       )}
 
       <AlertDialog open={verifyDialogOpen} onOpenChange={setVerifyDialogOpen}>
-        <AlertDialogContent>
+        <AlertDialogContent className="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 border-slate-700">
           <AlertDialogHeader>
-            <AlertDialogTitle>Verify User</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogTitle className="text-white">Verify User</AlertDialogTitle>
+            <AlertDialogDescription className="text-slate-300">
               Are you sure you want to verify {userToVerify?.name || userToVerify?.email}? 
               This action will mark the user as verified.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel className="bg-slate-800 text-white hover:bg-slate-700 border-slate-600">Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleVerifyConfirm}
               disabled={verifyingUserId !== null}
+              className="bg-indigo-600 text-white hover:bg-indigo-700"
             >
               {verifyingUserId ? "Verifying..." : "Verify"}
             </AlertDialogAction>

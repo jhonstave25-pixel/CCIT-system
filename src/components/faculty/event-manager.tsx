@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import {
@@ -48,11 +48,7 @@ export function EventManager() {
   })
   const { toast } = useToast()
 
-  useEffect(() => {
-    loadEvents()
-  }, [])
-
-  async function loadEvents() {
+  const loadEvents = useCallback(async () => {
     setLoading(true)
     try {
       const res = await fetch("/api/faculty/events")
@@ -68,7 +64,11 @@ export function EventManager() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [toast])
+
+  useEffect(() => {
+    loadEvents()
+  }, [loadEvents])
 
   async function createEvent(e: React.FormEvent) {
     e.preventDefault()

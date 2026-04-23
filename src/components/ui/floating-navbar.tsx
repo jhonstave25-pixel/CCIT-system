@@ -46,7 +46,7 @@ export function FloatingNavbar() {
         <nav className="h-14 sm:h-16 flex items-center rounded-b-xl bg-transparent">
           {/* Left: Brand */}
           <Link href="/" className="select-none">
-            <h1 className="text-white/90 font-extrabold tracking-wide text-base sm:text-lg bg-gradient-to-r from-blue-300 to-violet-400 bg-clip-text text-transparent">
+            <h1 className="text-white/90 font-extrabold tracking-wide text-base sm:text-lg bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
               CCIT CONNECT
             </h1>
           </Link>
@@ -56,9 +56,9 @@ export function FloatingNavbar() {
             <div className="ml-auto flex items-center gap-3">
               <Button
                 asChild
-                className="h-9 rounded-lg bg-gradient-to-r from-indigo-500 to-violet-600 text-white px-4 py-2 hover:opacity-90 focus-visible:ring-2 focus-visible:ring-indigo-300"
+                className="h-9 rounded-lg bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-600 text-white px-4 py-2 hover:opacity-90 focus-visible:ring-2 focus-visible:ring-indigo-300"
               >
-                <Link href="/register">Join Now</Link>
+                <Link href="/request-account">Join Now</Link>
               </Button>
               <Button
                 asChild
@@ -94,10 +94,10 @@ export function FloatingNavbar() {
                     <li key={href}>
                       <Link
                         href={href}
-                        className={`text-white/90 hover:text-white transition text-[15px] md:text-[16px] lg:text-[18px] font-semibold ${
+                        className={`relative text-white/90 hover:text-white transition-all duration-200 ease-out text-[15px] md:text-[16px] lg:text-[18px] font-semibold hover:scale-105 ${
                           pathname === href || (href !== "/dashboard" && pathname.startsWith(href))
-                            ? "text-white"
-                            : ""
+                            ? "text-white after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-indigo-400"
+                            : "hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:w-full hover:after:h-0.5 hover:after:bg-white/50 hover:after:transition-all hover:after:duration-200"
                         }`}
                       >
                         {label}
@@ -115,14 +115,14 @@ export function FloatingNavbar() {
                     <button
                       onClick={handleSignOut}
                       disabled={isSigningOut}
-                      className="hidden sm:block rounded-full px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold bg-white/10 text-white hover:bg-white/20 backdrop-blur-md transition-colors duration-150 focus-visible:ring-2 focus-visible:ring-indigo-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="hidden sm:block rounded-full px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold bg-white/10 text-white hover:bg-white/25 hover:scale-105 backdrop-blur-md transition-all duration-200 ease-out focus-visible:ring-2 focus-visible:ring-indigo-300 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
                     >
                       {isSigningOut ? "Signing out..." : "Sign Out"}
                     </button>
                     {/* Mobile Menu Button */}
                     <button
                       onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                      className="md:hidden p-2 rounded-lg bg-white/10 text-white hover:bg-white/20 backdrop-blur-md transition-colors duration-150"
+                      className="md:hidden p-2 rounded-lg bg-white/10 text-white hover:bg-white/25 hover:scale-105 backdrop-blur-md transition-all duration-200 ease-out active:scale-95"
                       aria-label="Toggle menu"
                     >
                       {mobileMenuOpen ? (

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import {
@@ -45,11 +45,7 @@ export function VerificationCenter({ onStatusChange }: VerificationCenterProps) 
   const [processing, setProcessing] = useState(false)
   const { toast } = useToast()
 
-  useEffect(() => {
-    loadRequests()
-  }, [])
-
-  async function loadRequests() {
+  const loadRequests = useCallback(async () => {
     setLoading(true)
     try {
       const res = await fetch("/api/faculty/verifications")
@@ -65,7 +61,11 @@ export function VerificationCenter({ onStatusChange }: VerificationCenterProps) 
     } finally {
       setLoading(false)
     }
-  }
+  }, [toast])
+
+  useEffect(() => {
+    loadRequests()
+  }, [loadRequests])
 
   async function handleApprove(requestId: string, userId: string) {
     setProcessing(true)

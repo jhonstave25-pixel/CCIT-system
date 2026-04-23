@@ -11,6 +11,7 @@ model User {
   id                   String                @id @default(cuid())
   name                 String?
   email                String                @unique
+  contactNumber        String?
   emailVerified        DateTime?
   image                String?
   role                 Role                  @default(ALUMNI)
@@ -23,6 +24,8 @@ model User {
   createdAt            DateTime              @default(now())
   updatedAt            DateTime              @updatedAt
   password             String?
+  passwordResetToken   String?
+  passwordResetExpires DateTime?
   accounts             Account[]
   comments             Comment[]
   connectionsReceived  Connection[]          @relation("ConnectionReceiver")
@@ -47,6 +50,7 @@ model User {
   recommendationsReceived Recommendation[]   @relation("RecommendationAlumni")
   blocksInitiated      Block[]               @relation("Blocker")
   blocksReceived       Block[]               @relation("Blocked")
+  processedRequests    AccountRequest[]      @relation("ProcessedByAdmin")
 
   @@index([email])
   @@index([role])
@@ -607,4 +611,29 @@ model Block {
   @@index([blockerId])
   @@index([blockedId])
   @@index([createdAt])
+}
+
+model AccountRequest {
+  id            String            @id @default(cuid())
+  firstName     String
+  lastName      String
+  email         String
+  contactNumber String
+  status        RequestStatus     @default(PENDING)
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  processedAt   DateTime?
+  processedBy   String?
+  admin         User?             @relation("ProcessedByAdmin", fields: [processedBy], references: [id], onDelete: Cascade)
+  notes         String?
+  
+  @@unique([email])
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }

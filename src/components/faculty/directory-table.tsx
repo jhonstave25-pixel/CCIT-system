@@ -299,9 +299,8 @@ export function DirectoryTable({ onVerifyChange }: DirectoryTableProps) {
           <CardTitle className="text-white">Alumni Directory</CardTitle>
           <Button
             onClick={exportCSV}
-            variant="outline"
             size="sm"
-            className="border-white/20 text-white hover:bg-white/10"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white"
           >
             <Download className="w-4 h-4 mr-2" />
             Export CSV
@@ -364,7 +363,7 @@ export function DirectoryTable({ onVerifyChange }: DirectoryTableProps) {
           <ScrollArea className="h-[600px]">
             <Table>
               <TableHeader>
-                <TableRow className="border-white/10">
+                <TableRow className="border-white/10 bg-indigo-900/40">
                   <TableHead className="text-white">Name</TableHead>
                   <TableHead className="text-white">Email</TableHead>
                   <TableHead className="text-white">Batch</TableHead>
@@ -377,7 +376,7 @@ export function DirectoryTable({ onVerifyChange }: DirectoryTableProps) {
               <TableBody>
                 {loading ? (
                   Array.from({ length: 5 }).map((_, i) => (
-                    <TableRow key={i} className="border-white/10">
+                    <TableRow key={i} className="border-white/10 hover:bg-indigo-900/30">
                       <TableCell><Skeleton className="h-4 w-32 bg-white/10" /></TableCell>
                       <TableCell><Skeleton className="h-4 w-40 bg-white/10" /></TableCell>
                       <TableCell><Skeleton className="h-4 w-20 bg-white/10" /></TableCell>
@@ -395,18 +394,18 @@ export function DirectoryTable({ onVerifyChange }: DirectoryTableProps) {
                   </TableRow>
                 ) : (
                   alumni.map((alum) => (
-                    <TableRow key={alum.id} className="border-white/10">
-                      <TableCell className="text-white font-medium">
+                    <TableRow key={alum.id} className="border-white/10 hover:bg-indigo-800/40 hover:backdrop-blur-sm">
+                      <TableCell className="text-white font-medium transition-colors duration-200">
                         {alum.name || "N/A"}
                       </TableCell>
-                      <TableCell className="text-white/80">{alum.email}</TableCell>
-                      <TableCell className="text-white/80">
+                      <TableCell className="text-white/80 transition-colors duration-200 group-hover:text-white">{alum.email}</TableCell>
+                      <TableCell className="text-white/80 transition-colors duration-200">
                         {alum.profile?.batch || "N/A"}
                       </TableCell>
-                      <TableCell className="text-white/80">
+                      <TableCell className="text-white/80 transition-colors duration-200">
                         {alum.profile?.degree || "N/A"}
                       </TableCell>
-                      <TableCell className="text-white/80">
+                      <TableCell className="text-white/80 transition-colors duration-200">
                         {alum.profile?.currentCompany || "N/A"}
                       </TableCell>
                       <TableCell>
@@ -423,7 +422,7 @@ export function DirectoryTable({ onVerifyChange }: DirectoryTableProps) {
                             <Button
                               variant="ghost"
                               size="sm"
-                              className="h-8 w-8 p-0 text-white hover:bg-white/10"
+                              className="h-8 w-8 p-0 text-white hover:bg-white/20 hover:scale-110 transition-all duration-200"
                             >
                               <Eye className="w-4 h-4" />
                             </Button>

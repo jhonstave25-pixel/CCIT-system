@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useTransition, useRef, useCallback } from "react"
+import { useState, useTransition } from "react"
 import { signIn } from "next-auth/react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -12,7 +12,7 @@ import Link from "next/link"
 import { loginWithPassword } from "@/actions/auth.actions"
 import { getDashboardUrl } from "@/lib/redirects"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Eye } from "lucide-react"
+import { Eye, EyeOff } from "lucide-react"
 
 export default function LoginPage() {
   const router = useRouter()
@@ -25,35 +25,6 @@ export default function LoginPage() {
   const [password, setPassword] = useState("")
   const [rememberMe, setRememberMe] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
-  const longPressTimerRef = useRef<NodeJS.Timeout | null>(null)
-
-  const handleMouseDown = useCallback(() => {
-    longPressTimerRef.current = setTimeout(() => {
-      setShowPassword(true)
-    }, 200)
-  }, [])
-
-  const handleMouseUp = useCallback(() => {
-    if (longPressTimerRef.current) {
-      clearTimeout(longPressTimerRef.current)
-      longPressTimerRef.current = null
-    }
-    setShowPassword(false)
-  }, [])
-
-  const handleTouchStart = useCallback(() => {
-    longPressTimerRef.current = setTimeout(() => {
-      setShowPassword(true)
-    }, 200)
-  }, [])
-
-  const handleTouchEnd = useCallback(() => {
-    if (longPressTimerRef.current) {
-      clearTimeout(longPressTimerRef.current)
-      longPressTimerRef.current = null
-    }
-    setShowPassword(false)
-  }, [])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -132,12 +103,12 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 p-4">
-      <div className="bg-white/10 backdrop-blur-lg p-8 rounded-2xl shadow-2xl w-full max-w-[400px] animate-in slide-in-from-bottom-5 duration-500">
-        <h1 className="text-2xl font-bold text-white text-center mb-2">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 p-4">
+      <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-[400px] animate-in slide-in-from-bottom-5 duration-500 border border-slate-200">
+        <h1 className="text-2xl font-bold text-slate-900 text-center mb-2">
           Welcome Back
         </h1>
-        <p className="text-sm text-white/80 text-center mb-6">
+        <p className="text-sm text-slate-600 text-center mb-6">
           Sign in to your account
         </p>
 
@@ -151,7 +122,7 @@ export default function LoginPage() {
               onChange={(e) => setEmail(e.target.value)}
               required
               disabled={isPending}
-              className="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 border-white/20 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-300"
+              className="w-full p-3 rounded-lg bg-slate-900 text-white placeholder-slate-400 border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-300"
             />
           </div>
           <div className="relative">
@@ -163,19 +134,20 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               required
               disabled={isPending}
-              className="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 border-white/20 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-300 pr-12 h-12"
+              className="w-full p-3 rounded-lg bg-slate-900 text-white placeholder-slate-400 border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-300 pr-12 h-12"
             />
             <button
               type="button"
-              onMouseDown={handleMouseDown}
-              onMouseUp={handleMouseUp}
-              onMouseLeave={handleMouseUp}
-              onTouchStart={handleTouchStart}
-              onTouchEnd={handleTouchEnd}
-              className="absolute right-3 top-0 bottom-0 flex items-center text-white/70 hover:text-white transition-colors select-none"
-              aria-label="Long press to show password"
+              tabIndex={-1}
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                setShowPassword(!showPassword)
+              }}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors focus:outline-none"
+              aria-label={showPassword ? "Hide password" : "Show password"}
             >
-              <Eye className="h-5 w-5" />
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
           <div className="flex items-center space-x-2">
@@ -183,18 +155,18 @@ export default function LoginPage() {
               id="remember"
               checked={rememberMe}
               onCheckedChange={(checked) => setRememberMe(checked as boolean)}
-              className="border-white/30 data-[state=checked]:bg-indigo-500 data-[state=checked]:border-indigo-500"
+              className="border-slate-300 data-[state=checked]:bg-indigo-600 data-[state=checked]:border-indigo-600"
             />
             <Label
               htmlFor="remember"
-              className="text-sm font-normal cursor-pointer text-white/90"
+              className="text-sm font-normal cursor-pointer text-slate-700"
             >
               Remember me
             </Label>
           </div>
           <Button
             type="submit"
-            className="w-full py-3 rounded-lg bg-gradient-to-r from-indigo-500 to-violet-600 text-white font-medium hover:opacity-90 transition focus-visible:ring-2 focus-visible:ring-indigo-300"
+            className="w-full py-3 rounded-lg bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition focus-visible:ring-2 focus-visible:ring-indigo-300"
             disabled={isPending}
           >
             {isPending ? "Signing in..." : "Sign In"}
@@ -202,22 +174,22 @@ export default function LoginPage() {
           <div className="text-center">
             <Link
               href="/forgot-password"
-              className="text-sm text-white/80 hover:text-white hover:underline transition-colors"
+              className="text-sm text-slate-600 hover:text-slate-900 hover:underline transition-colors"
             >
               Forgot password?
             </Link>
           </div>
         </form>
 
-        <Separator className="my-6 bg-white/20" />
+        <Separator className="my-6 bg-slate-200" />
 
-        <p className="text-center text-sm text-white/80">
+        <p className="text-center text-sm text-slate-600">
           Don&apos;t have an account?{" "}
           <Link
-            href="/register"
-            className="text-indigo-300 hover:text-indigo-200 font-medium hover:underline transition-colors"
+            href="/request-account"
+            className="text-indigo-600 hover:text-indigo-700 font-medium hover:underline transition-colors"
           >
-            Register here
+            Join now
           </Link>
         </p>
       </div>

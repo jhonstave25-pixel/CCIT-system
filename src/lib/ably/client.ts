@@ -305,6 +305,25 @@ export function useTypingIndicator(
   const channelName = `ccit:chat:${conversationId}`
   const TYPING_THROTTLE_MS = 500 // Throttle typing events to max 2 per second
 
+  const stopTyping = useCallback(() => {
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current)
+      typingTimeoutRef.current = null
+    }
+
+    // Always send stop typing, but still throttle
+    const now = Date.now()
+    if (now - lastPublishRef.current >= TYPING_THROTTLE_MS) {
+      publish(channelName, "typing", {
+        conversationId,
+        userId,
+        userName,
+        isTyping: false,
+      })
+      lastPublishRef.current = now
+    }
+  }, [conversationId, userId, userName, publish, channelName])
+
   const startTyping = useCallback(() => {
     if (typingTimeoutRef.current) {
       clearTimeout(typingTimeoutRef.current)
@@ -326,26 +345,7 @@ export function useTypingIndicator(
     typingTimeoutRef.current = setTimeout(() => {
       stopTyping()
     }, 3000)
-  }, [conversationId, userId, userName, publish, channelName])
-
-  const stopTyping = useCallback(() => {
-    if (typingTimeoutRef.current) {
-      clearTimeout(typingTimeoutRef.current)
-      typingTimeoutRef.current = null
-    }
-
-    // Always send stop typing, but still throttle
-    const now = Date.now()
-    if (now - lastPublishRef.current >= TYPING_THROTTLE_MS) {
-      publish(channelName, "typing", {
-        conversationId,
-        userId,
-        userName,
-        isTyping: false,
-      })
-      lastPublishRef.current = now
-    }
-  }, [conversationId, userId, userName, publish, channelName])
+  }, [conversationId, userId, userName, publish, channelName, stopTyping])
 
   useEffect(() => {
     return () => {

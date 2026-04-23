@@ -1,7 +1,8 @@
 "use server"
 
 import { prisma } from "@/lib/prisma"
-import { sendOTP } from "@/lib/otp"
+import { sendAccountApprovedEmail } from "@/lib/email"
+import bcrypt from "bcryptjs"
 import { revalidatePath } from "next/cache"
 import { auth } from "@/lib/auth"
 import { publishToAblyChannel, ABLY_CHANNELS, ABLY_EVENTS } from "@/lib/ably"
@@ -28,12 +29,17 @@ export async function createUser(data: {
       return { success: false, error: "User already exists" }
     }
 
-    // Create user
+    // Generate a random password for the user
+    const generatedPassword = generateRandomPassword()
+    const hashedPassword = await bcrypt.hash(generatedPassword, 10)
+
+    // Create user with generated password
     // Set status to PENDING for FACULTY role, null for others
     const user = await prisma.user.create({
       data: {
         email: data.email.toLowerCase(),
         name: data.name,
+        password: hashedPassword,
         role: data.role,
         status: data.role === "FACULTY" ? "PENDING" : null,
         emailVerified: new Date(), // Auto-verify admin-created users
@@ -53,8 +59,8 @@ export async function createUser(data: {
       timestamp: new Date().toISOString(),
     })
 
-    // Send registration OTP so they can set up their account
-    await sendOTP(data.email.toLowerCase(), "REGISTER")
+    // Send account approved email with login credentials
+    await sendAccountApprovedEmail(data.email.toLowerCase(), data.name, generatedPassword)
 
     // Publish real-time user creation event
     try {
@@ -126,5 +132,15 @@ export async function deleteUser(userId: string) {
   } catch (error) {
     return { success: false, error: "Failed to delete user" }
   }
+}
+
+// Helper function to generate a random password
+function generateRandomPassword(length: number = 12): string {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*"
+  let password = ""
+  for (let i = 0; i < length; i++) {
+    password += chars.charAt(Math.floor(Math.random() * chars.length))
+  }
+  return password
 }
 

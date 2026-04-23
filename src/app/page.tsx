@@ -33,14 +33,20 @@ const AnimatedJoinCTA = dynamic(() => import("@/components/landing/join-cta"), {
 })
 
 // Color tokens
-const primaryBtn = "bg-indigo-600 text-white hover:bg-indigo-500 focus:ring-2 focus:ring-indigo-400/40"
+const primaryBtn = "bg-blue-700 text-white hover:bg-blue-600 focus:ring-2 focus:ring-blue-500/40"
 const secondaryBtn = "border border-white/20 bg-white/10 text-white hover:bg-white/20 hover:border-white/30 focus:ring-2 focus:ring-white/20 transition-all duration-200"
 
 export default async function LandingPage() {
   const stats = await getLandingStats()
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-indigo-950 to-[#0b0720] text-foreground relative">
+    <div className="min-h-screen relative">
+      {/* CCIT Building Background Image */}
+      <div 
+        className="fixed inset-0 bg-cover bg-center bg-no-repeat -z-10"
+        style={{ backgroundImage: "url('/e3434856-3387-49fa-bab2-e4ac97e294b0.jpg')" }}
+      />
+      <div className="fixed inset-0 bg-black/40 -z-10" /> {/* Dark overlay for text readability */}
       <AnimatedNavbar />
 
       <main className="max-w-7xl mx-auto px-6 sm:px-8 pt-28 space-y-20 relative z-10 pb-20">

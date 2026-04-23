@@ -44,20 +44,20 @@ export function DeleteUserDialog({ userId, userName }: { userId: string; userNam
           Delete User
         </button>
       </AlertDialogTrigger>
-      <AlertDialogContent>
+      <AlertDialogContent className="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 border-slate-700">
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-          <AlertDialogDescription>
+          <AlertDialogTitle className="text-white">Are you sure?</AlertDialogTitle>
+          <AlertDialogDescription className="text-slate-300">
             This action cannot be undone. This will permanently delete the user account for{" "}
-            <strong>{userName}</strong> and all associated data.
+            <strong className="text-white">{userName}</strong> and all associated data.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel disabled={isLoading} className="bg-slate-800 text-white hover:bg-slate-700 border-slate-600">Cancel</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleDelete}
             disabled={isLoading}
-            className="bg-red-600 hover:bg-red-700"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white"
           >
             {isLoading ? "Deleting..." : "Delete"}
           </AlertDialogAction>

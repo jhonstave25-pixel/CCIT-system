@@ -108,35 +108,35 @@ export function ConnectionsList({ users, currentUserId, showAll = false, showUnf
         return (
           <Card
             key={user.id}
-            className="bg-white/10 dark:bg-indigo-950/30 backdrop-blur-md border-white/20 dark:border-indigo-800/30 text-white hover:bg-white/15 dark:hover:bg-indigo-950/40 transition-all duration-300 hover:shadow-xl"
+            className="bg-white dark:bg-indigo-950/30 backdrop-blur-md border-slate-200 dark:border-indigo-800/30 text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-indigo-900/40 transition-all duration-300 ease-out hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02]"
           >
             <CardHeader className="flex flex-col items-center text-center pb-3">
               <Link href={`/profile/${user.id}`} className="group">
                 {user.image ? (
-                  <Avatar className="w-20 h-20 border-2 border-white/30 mb-3 group-hover:border-indigo-300 transition-colors">
+                  <Avatar className="w-20 h-20 border-2 border-slate-300 dark:border-white/30 mb-3 group-hover:border-indigo-500 dark:group-hover:border-indigo-300 transition-colors">
                     <AvatarImage src={user.image} alt={user.name || "Alumni"} />
-                    <AvatarFallback className="bg-indigo-500/40 text-white text-xl font-bold">
+                    <AvatarFallback className="bg-indigo-500 text-white text-xl font-bold">
                       {initials}
                     </AvatarFallback>
                   </Avatar>
                 ) : (
-                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-indigo-400/40 to-violet-400/40 border-2 border-white/30 flex items-center justify-center text-2xl font-bold mb-3 group-hover:border-indigo-300 transition-colors">
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-indigo-400 to-violet-500 border-2 border-slate-300 dark:border-white/30 flex items-center justify-center text-2xl font-bold text-white mb-3 group-hover:border-indigo-500 dark:group-hover:border-indigo-300 transition-colors">
                     {initials}
                   </div>
                 )}
               </Link>
               
-              <CardTitle className="text-lg font-semibold mb-1">
+              <CardTitle className="text-lg font-semibold mb-1 text-slate-900 dark:text-white">
                 <Link
                   href={`/profile/${user.id}`}
-                  className="hover:text-indigo-300 transition-colors"
+                  className="hover:text-indigo-600 dark:hover:text-indigo-300 transition-all duration-200 ease-out hover:scale-105 inline-block"
                 >
                   {user.name || "Alumni Member"}
                 </Link>
               </CardTitle>
               
               {profile && (
-                <div className="flex items-center gap-2 text-sm text-indigo-200 mb-2">
+                <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-indigo-200 mb-2">
                   <GraduationCap className="w-4 h-4" />
                   <span>
                     {profile.degree || "N/A"} • Batch {profile.batch || "N/A"}
@@ -147,21 +147,21 @@ export function ConnectionsList({ users, currentUserId, showAll = false, showUnf
 
             <CardContent className="text-center space-y-3 pt-0">
               {profile?.currentPosition && (
-                <div className="flex items-center justify-center gap-2 text-sm text-white/80">
-                  <Briefcase className="w-4 h-4 text-white/60" />
+                <div className="flex items-center justify-center gap-2 text-sm text-slate-700 dark:text-white/80">
+                  <Briefcase className="w-4 h-4 text-slate-500 dark:text-white/60" />
                   <span>{profile.currentPosition}</span>
                 </div>
               )}
               
               {profile?.currentCompany && (
-                <div className="flex items-center justify-center gap-2 text-sm text-white/80">
-                  <Building2 className="w-4 h-4 text-white/60" />
+                <div className="flex items-center justify-center gap-2 text-sm text-slate-700 dark:text-white/80">
+                  <Building2 className="w-4 h-4 text-slate-500 dark:text-white/60" />
                   <span>{profile.currentCompany}</span>
                 </div>
               )}
 
               {profile?.industry && (
-                <Badge className="bg-indigo-500/20 border-indigo-300/30 text-indigo-200 text-xs">
+                <Badge className="bg-indigo-100 dark:bg-indigo-500/20 border-indigo-300 dark:border-indigo-300/30 text-indigo-700 dark:text-indigo-200 text-xs">
                   {profile.industry}
                 </Badge>
               )}

@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { NextResponse } from "next/server"
 import { publishToAblyChannel, ABLY_CHANNELS, ABLY_EVENTS } from "@/lib/ably"
+import { sendVerificationNotificationEmail } from "@/lib/email"
 import type { RecordUpdatePayload } from "@/lib/ably/types"
 
 export async function POST(
@@ -86,6 +87,17 @@ export async function POST(
     } catch (ablyError) {
       console.warn("Failed to publish verification update to Ably:", ablyError)
       // Don't fail the request if Ably fails
+    }
+
+    // Send email notification to user
+    try {
+      if (user.email && user.name) {
+        await sendVerificationNotificationEmail(user.email, user.name)
+        console.log(`Verification email sent to ${user.email}`)
+      }
+    } catch (emailError) {
+      console.warn("Failed to send verification email:", emailError)
+      // Don't fail the request if email fails
     }
 
     return NextResponse.json({

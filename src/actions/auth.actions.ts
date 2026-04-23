@@ -2,16 +2,43 @@
 
 import { prisma } from "@/lib/prisma"
 import { sendOTP, verifyOTP } from "@/lib/otp"
+import { checkRateLimit, trackFailedLogin, clearFailedAttempts, isAccountLocked } from "@/lib/rate-limit"
 import bcrypt from "bcryptjs"
 
 export async function loginWithPassword(email: string, password: string) {
   try {
+    // Check rate limit by IP (use email as identifier for simplicity)
+    const rateLimit = await checkRateLimit(`login:${email.toLowerCase()}`, {
+      maxAttempts: 5,
+      windowMs: 15 * 60 * 1000, // 15 minutes
+    })
+
+    if (!rateLimit.allowed) {
+      const minutesLeft = Math.ceil((rateLimit.resetTime - Date.now()) / 60000)
+      return { 
+        success: false, 
+        error: `Too many login attempts. Please try again in ${minutesLeft} minutes.` 
+      }
+    }
+
+    // Check if account is locked due to failed attempts
+    const lockStatus = await isAccountLocked(email)
+    if (lockStatus.locked && lockStatus.lockedUntil) {
+      const minutesLeft = Math.ceil((lockStatus.lockedUntil - Date.now()) / 60000)
+      return { 
+        success: false, 
+        error: `Account temporarily locked due to too many failed attempts. Please try again in ${minutesLeft} minutes.` 
+      }
+    }
+
     // Find user
     const user = await prisma.user.findUnique({
       where: { email: email.toLowerCase() },
     })
 
     if (!user) {
+      // Track failed attempt
+      await trackFailedLogin(email)
       return { success: false, error: "Invalid email or password" }
     }
 
@@ -54,8 +81,20 @@ export async function loginWithPassword(email: string, password: string) {
     const isPasswordValid = await bcrypt.compare(password, user.password)
 
     if (!isPasswordValid) {
+      // Track failed attempt
+      const lockStatus = await trackFailedLogin(email)
+      if (lockStatus.locked) {
+        const minutesLeft = Math.ceil((lockStatus.lockedUntil! - Date.now()) / 60000)
+        return { 
+          success: false, 
+          error: `Account temporarily locked due to too many failed attempts. Please try again in ${minutesLeft} minutes.` 
+        }
+      }
       return { success: false, error: "Invalid email or password" }
     }
+
+    // Clear failed attempts on successful login
+    await clearFailedAttempts(email)
 
     // Check if ALUMNI is unverified - block login but allow pending-approval access
     if (user.role === "ALUMNI" && user.userStatus === "UNVERIFIED") {

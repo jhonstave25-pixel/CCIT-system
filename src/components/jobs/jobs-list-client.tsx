@@ -215,7 +215,7 @@ export function JobsListClient({ initialJobs }: JobsListClientProps) {
 
                 {job.salaryRange && (
                   <p className="text-sm font-medium text-indigo-200">
-                    {job.salaryRange}
+                    {job.salaryRange.replace(/\$/g, "₱")}
                   </p>
                 )}
 

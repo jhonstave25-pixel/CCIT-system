@@ -55,25 +55,25 @@ export default async function ConnectionsPage() {
   )
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800 dark:from-slate-900 dark:via-indigo-950 dark:to-purple-950 text-white pt-16 sm:pt-20 p-6 md:p-10 transition-colors">
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-indigo-950 dark:to-purple-950 text-slate-900 dark:text-white pt-16 sm:pt-20 p-6 md:p-10 transition-colors">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <Users className="w-8 h-8 text-indigo-300" />
-              <h1 className="text-4xl font-bold">Alumni Connections</h1>
+              <Users className="w-8 h-8 text-indigo-600 dark:text-indigo-300" />
+              <h1 className="text-4xl font-bold text-slate-900 dark:text-white">Alumni Connections</h1>
             </div>
-            <p className="text-white/70">Connect with fellow graduates and expand your network</p>
+            <p className="text-slate-600 dark:text-white/70">Connect with fellow graduates and expand your network</p>
           </div>
           <div className="flex gap-3">
             <Link href="/connections/my-connections">
-              <Button variant="outline" className="border-white/20 text-white hover:bg-white/10">
+              <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">
                 <UserCheck className="w-4 h-4 mr-2" />
                 My Connections
               </Button>
             </Link>
             <Link href="/connections/pending">
-              <Button variant="outline" className="border-white/20 text-white hover:bg-white/10">
+              <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">
                 <UserPlus className="w-4 h-4 mr-2" />
                 Pending Requests
               </Button>

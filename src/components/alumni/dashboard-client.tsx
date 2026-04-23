@@ -100,7 +100,7 @@ export function DashboardClient({ userName, userEmail, userImage, userRole, stat
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800 dark:from-slate-900 dark:via-indigo-950 dark:to-purple-950 text-white pt-16 sm:pt-20 transition-colors">
+    <div className="min-h-screen bg-gradient-to-br from-red-800 via-red-700 to-red-900 dark:from-slate-900 dark:via-red-950 dark:to-red-900 text-white pt-16 sm:pt-20 transition-colors">
       {/* Welcome Section */}
       <section className="text-center pt-12 sm:pt-16 pb-16 px-4 space-y-6">
         <motion.div

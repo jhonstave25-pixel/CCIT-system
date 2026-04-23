@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
-import { Send, Menu, X, Ban, UserCheck } from "lucide-react"
+import { Send, Menu, X, Ban, UserCheck, Paperclip, Camera, Image } from "lucide-react"
 import { format, formatDistanceToNow } from "date-fns"
 import { getMessages } from "@/app/(dashboard)/messages/_actions"
 import { blockUser, unblockUser, checkMutualBlock } from "@/actions/block.actions"
@@ -71,6 +71,9 @@ export default function EnhancedChatLayout({
   const [isBlockedBy, setIsBlockedBy] = useState(false)
   const [blockLoading, setBlockLoading] = useState(false)
   const bottomRef = useRef<HTMLDivElement | null>(null)
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
+  const cameraInputRef = useRef<HTMLInputElement | null>(null)
+  const imageInputRef = useRef<HTMLInputElement | null>(null)
 
   // Get active conversation details
   const activeChat = conversations.find((c) => c.id === activeChatId)
@@ -99,7 +102,7 @@ export default function EnhancedChatLayout({
   }
 
   // Check if users are blocked
-  async function checkBlockStatus(otherUserId: string) {
+  const checkBlockStatus = useCallback(async (otherUserId: string) => {
     if (!userId) return
     try {
       const result = await checkMutualBlock(userId, otherUserId)
@@ -111,10 +114,10 @@ export default function EnhancedChatLayout({
     } catch (error) {
       console.error("Error checking block status:", error)
     }
-  }
+  }, [userId])
 
   // Load messages for active conversation
-  async function loadMessages(conversationId: string) {
+  const loadMessages = useCallback(async (conversationId: string) => {
     if (!userId) return
     try {
       const data = await getMessages(conversationId, userId)
@@ -138,7 +141,7 @@ export default function EnhancedChatLayout({
     } catch (error) {
       console.error("Error fetching messages:", error)
     }
-  }
+  }, [userId])
 
   // Set active chat and load messages
   useEffect(() => {
@@ -147,7 +150,7 @@ export default function EnhancedChatLayout({
       // Check block status for 1:1 chats
       const activeChat = conversations.find((c) => c.id === activeChatId)
       if (activeChat && !activeChat.isGroup) {
-        const otherUser = activeChat.participants.find(p => p.user.id !== userId)?.user
+        const otherUser = activeChat.participants.find((p) => p.user.id !== userId)?.user
         if (otherUser) {
           checkBlockStatus(otherUser.id)
         }
@@ -157,7 +160,7 @@ export default function EnhancedChatLayout({
         router.push(`/chat/${activeChatId}`)
       }
     }
-  }, [activeChatId, userId])
+  }, [activeChatId, userId, loadMessages, checkBlockStatus, pathname, router, conversations])
 
   // Sync with URL
   useEffect(() => {
@@ -165,7 +168,7 @@ export default function EnhancedChatLayout({
     if (chatIdFromPath && chatIdFromPath !== activeChatId) {
       setActiveChatId(chatIdFromPath)
     }
-  }, [pathname])
+  }, [pathname, activeChatId])
 
   // Handle new message from Ably
   const handleNewMessage = useCallback((newMessage: any) => {
@@ -228,6 +231,46 @@ export default function EnhancedChatLayout({
       })
     }
   }, [messages.length])
+
+  // File upload handlers
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file && activeChatId) {
+      // TODO: Implement file upload to server
+      toast({
+        title: "File selected",
+        description: `${file.name} (${(file.size / 1024).toFixed(1)} KB)`,
+      })
+      // Reset input
+      e.target.value = ""
+    }
+  }
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file && activeChatId) {
+      // TODO: Implement image upload to server
+      toast({
+        title: "Image selected",
+        description: `${file.name} (${(file.size / 1024).toFixed(1)} KB)`,
+      })
+      // Reset input
+      e.target.value = ""
+    }
+  }
+
+  const handleCameraCapture = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file && activeChatId) {
+      // TODO: Implement photo upload to server
+      toast({
+        title: "Photo captured",
+        description: `Photo (${(file.size / 1024).toFixed(1)} KB)`,
+      })
+      // Reset input
+      e.target.value = ""
+    }
+  }
 
   // Send message
   async function handleSendMessage(e: React.FormEvent) {
@@ -582,13 +625,73 @@ export default function EnhancedChatLayout({
                     }
                   }}
                 />
-                <Button
-                  type="submit"
-                  disabled={!message.trim() || isLoading}
-                  className="rounded-full px-3 py-2 bg-gradient-to-r from-indigo-500 to-violet-600 hover:opacity-90 transition disabled:opacity-50"
-                >
-                  <Send className="h-4 w-4 text-white" />
-                </Button>
+                <div className="flex gap-1">
+                  {/* Hidden file inputs */}
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileUpload}
+                    className="hidden"
+                    accept="*/*"
+                  />
+                  <input
+                    type="file"
+                    ref={cameraInputRef}
+                    onChange={handleCameraCapture}
+                    className="hidden"
+                    accept="image/*"
+                    capture="environment"
+                  />
+                  <input
+                    type="file"
+                    ref={imageInputRef}
+                    onChange={handleImageUpload}
+                    className="hidden"
+                    accept="image/*"
+                  />
+                  
+                  {/* File Upload Button */}
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="h-[36px] w-[36px] p-0 bg-white/10 text-white border border-white/20 hover:bg-white/20 hover:border-white/30 hover:scale-105 rounded-full transition-all duration-200 shadow-sm"
+                    title="Attach file"
+                  >
+                    <Paperclip className="w-4 h-4" />
+                  </Button>
+                  {/* Camera Button */}
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => cameraInputRef.current?.click()}
+                    className="h-[36px] w-[36px] p-0 bg-white/10 text-white border border-white/20 hover:bg-white/20 hover:border-white/30 hover:scale-105 rounded-full transition-all duration-200 shadow-sm"
+                    title="Take photo"
+                  >
+                    <Camera className="w-4 h-4" />
+                  </Button>
+                  {/* Picture Upload Button */}
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => imageInputRef.current?.click()}
+                    className="h-[36px] w-[36px] p-0 bg-white/10 text-white border border-white/20 hover:bg-white/20 hover:border-white/30 hover:scale-105 rounded-full transition-all duration-200 shadow-sm"
+                    title="Upload image"
+                  >
+                    <Image className="w-4 h-4" />
+                  </Button>
+                  {/* Send Button */}
+                  <Button
+                    type="submit"
+                    disabled={!message.trim() || isLoading}
+                    className="rounded-full px-3 py-2 bg-gradient-to-r from-indigo-500 to-violet-600 hover:from-indigo-400 hover:to-violet-500 hover:scale-105 hover:shadow-lg transition-all duration-200 disabled:opacity-50"
+                  >
+                    <Send className="h-4 w-4 text-white" />
+                  </Button>
+                </div>
               </form>
             )}
           </>

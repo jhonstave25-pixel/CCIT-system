@@ -130,7 +130,7 @@ export function ConnectButton({
         variant="outline"
         size="sm"
         disabled
-        className="bg-emerald-500/20 border-emerald-500/30 text-emerald-300"
+        className="bg-emerald-100 dark:bg-emerald-500/20 border-emerald-300 dark:border-emerald-500/30 text-emerald-700 dark:text-emerald-300"
       >
         <Check className="w-4 h-4 mr-2" />
         Connected
@@ -148,7 +148,7 @@ export function ConnectButton({
           size="sm"
           onClick={handleAccept}
           disabled={loading}
-          className="bg-emerald-500/20 border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/30"
+          className="bg-emerald-100 dark:bg-emerald-500/20 border-emerald-300 dark:border-emerald-500/30 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-200 dark:hover:bg-emerald-500/30"
         >
           {loading ? (
             <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -162,7 +162,7 @@ export function ConnectButton({
           size="sm"
           onClick={handleDecline}
           disabled={loading}
-          className="bg-red-500/20 border-red-500/30 text-red-300 hover:bg-red-500/30"
+          className="bg-red-100 dark:bg-red-500/20 border-red-300 dark:border-red-500/30 text-red-700 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-500/30"
         >
           <X className="w-4 h-4 mr-2" />
           Decline
@@ -178,7 +178,7 @@ export function ConnectButton({
         variant="outline"
         size="sm"
         disabled
-        className="bg-yellow-500/20 border-yellow-500/30 text-yellow-300"
+        className="bg-yellow-100 dark:bg-yellow-500/20 border-yellow-300 dark:border-yellow-500/30 text-yellow-700 dark:text-yellow-300"
       >
         <Clock className="w-4 h-4 mr-2" />
         Pending
@@ -189,11 +189,10 @@ export function ConnectButton({
   // If rejected or no connection yet
   return (
     <Button
-      variant="outline"
       size="sm"
       onClick={handleConnect}
       disabled={loading}
-      className="border-white/20 text-white hover:bg-white/10"
+      className="bg-indigo-600 hover:bg-indigo-700 text-white"
     >
       {loading ? (
         <Loader2 className="w-4 h-4 mr-2 animate-spin" />

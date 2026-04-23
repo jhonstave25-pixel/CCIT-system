@@ -5,7 +5,7 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 
-const primaryBtn = "bg-indigo-600 text-white hover:bg-indigo-500 focus:ring-2 focus:ring-indigo-400/40"
+const primaryBtn = "bg-indigo-300 text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-600/40"
 const secondaryBtn = "border border-white/20 bg-white/10 text-white hover:bg-white/20 hover:border-white/30 focus:ring-2 focus:ring-white/20 transition-colors duration-150"
 
 const links = [
@@ -13,7 +13,6 @@ const links = [
   { href: "#features", label: "Features" },
   { href: "#previews", label: "Events & Jobs" },
   { href: "#community", label: "Community" },
-  { href: "#join", label: "Join" },
 ]
 
 export default function Navbar() {
@@ -121,7 +120,7 @@ export default function Navbar() {
               })}
             </nav>
             <div className="flex items-center gap-2">
-              <Link href="/register">
+              <Link href="/request-account">
                 <Button size="sm" className={primaryBtn}>Join Now</Button>
               </Link>
               <Link href="/login">

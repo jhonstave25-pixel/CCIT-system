@@ -4,6 +4,64 @@ import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 import bcrypt from "bcryptjs"
 import { z } from "zod"
+import { sendProfileUpdatedEmail, sendWelcomeEmail } from "@/lib/email"
+import { auth } from "@/lib/auth"
+import { checkRateLimit } from "@/lib/rate-limit"
+
+// List of blocked temp/fake email domains
+const BLOCKED_EMAIL_DOMAINS = [
+  "tempmail.com",
+  "temp-mail.com",
+  "fakeemail.com",
+  "throwaway.com",
+  "mailinator.com",
+  "guerrillamail.com",
+  "sharklasers.com",
+  "getairmail.com",
+  "10minutemail.com",
+  "yopmail.com",
+  "tempinbox.com",
+  "mailnesia.com",
+  "tempmailaddress.com",
+  "burnermail.io",
+  "disposable.com",
+  "trashmail.com",
+  "fakeinbox.com",
+  "tempemail.com",
+  "spamgourmet.com",
+  "mytrashmail.com",
+  "mailcatch.com",
+  "tempmailer.com",
+  "tempmail.net",
+  "tmpmail.org",
+  "throwawaymail.com",
+  "emailfake.com",
+  "tempmail.plus",
+  "tempm.com",
+  "mailtemp.com",
+  "tempimail.com",
+  "fakemail.net",
+  "mohmal.com",
+  "yandex.com",
+  "protonmail.com",
+]
+
+function isValidEmail(email: string): { valid: boolean; error?: string } {
+  const lowerEmail = email.toLowerCase()
+  
+  // Check if it's Gmail
+  if (!lowerEmail.endsWith("@gmail.com")) {
+    return { valid: false, error: "Only Gmail addresses (@gmail.com) are allowed" }
+  }
+  
+  // Check blocked domains
+  const domain = lowerEmail.split("@")[1]
+  if (BLOCKED_EMAIL_DOMAINS.includes(domain)) {
+    return { valid: false, error: "Temp or fake email addresses are not allowed" }
+  }
+  
+  return { valid: true }
+}
 
 const profileSchema = z.object({
   phone: z.string().nullable().optional(),
@@ -38,6 +96,17 @@ export async function updateProfile(userId: string, data: z.infer<typeof profile
       },
     })
 
+    // Get user info for email notification
+    const session = await auth()
+    if (session?.user?.email && session?.user?.name) {
+      try {
+        await sendProfileUpdatedEmail(session.user.email, session.user.name, "profile")
+        console.log(`Profile update email sent to ${session.user.email}`)
+      } catch (emailError) {
+        console.warn("Failed to send profile update email:", emailError)
+      }
+    }
+
     revalidatePath("/profile")
     return { success: true, profile }
   } catch (error: any) {
@@ -57,8 +126,35 @@ export async function createAlumniAccount(data: {
   email: string
   password: string
   role: "ALUMNI" | "FACULTY"
+  honeypot?: string
 }) {
   try {
+    // Honeypot check - if filled, it's likely a bot
+    if (data.honeypot && data.honeypot.length > 0) {
+      console.log("Honeypot triggered - possible bot registration blocked")
+      return { success: false, error: "Registration failed. Please try again." }
+    }
+
+    // Rate limiting - max 3 registrations per email per hour
+    const rateLimit = await checkRateLimit(`register:${data.email.toLowerCase()}`, {
+      maxAttempts: 3,
+      windowMs: 60 * 60 * 1000, // 1 hour
+    })
+
+    if (!rateLimit.allowed) {
+      const minutesLeft = Math.ceil((rateLimit.resetTime - Date.now()) / 60000)
+      return { 
+        success: false, 
+        error: `Too many registration attempts. Please try again in ${minutesLeft} minutes.` 
+      }
+    }
+
+    // Validate email - only Gmail, no temp/fake emails
+    const emailValidation = isValidEmail(data.email)
+    if (!emailValidation.valid) {
+      return { success: false, error: emailValidation.error }
+    }
+
     // Check if user already exists
     const existing = await prisma.user.findUnique({
       where: { email: data.email.toLowerCase() },
@@ -126,6 +222,15 @@ export async function createAlumniAccount(data: {
     } catch (ablyError) {
       console.warn("Failed to publish user creation event to Ably:", ablyError)
       // Don't fail the request if Ably fails
+    }
+
+    // Send welcome email to new user
+    try {
+      await sendWelcomeEmail(user.email, user.name || "New User")
+      console.log(`Welcome email sent to ${user.email}`)
+    } catch (emailError) {
+      console.warn("Failed to send welcome email:", emailError)
+      // Don't fail the request if email fails
     }
 
     // OTP verification temporarily disabled - users can log in immediately

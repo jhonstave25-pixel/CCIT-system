@@ -35,6 +35,8 @@ export function ProfileClient({
   const [bio, setBio] = useState(
     profile?.bio || "I am a proud CCIT graduate passionate about technology and innovation."
   )
+  const [batch, setBatch] = useState(profile?.batch || "")
+  const [degree, setDegree] = useState(profile?.degree || "")
   const [editing, setEditing] = useState(false)
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
   const [uploadingImage, setUploadingImage] = useState(false)
@@ -54,9 +56,9 @@ export function ProfileClient({
           ...profile,
           bio: bio || "",
           graduationYear: profile?.graduationYear || new Date().getFullYear(),
-          degree: profile?.degree || "",
+          degree: degree || "",
           major: profile?.major || "",
-          batch: profile?.batch || "",
+          batch: batch || "",
         } as any)
 
         if (result.success) {
@@ -201,14 +203,37 @@ export function ProfileClient({
                 <h2 className="text-lg font-semibold">About Me</h2>
                 {editing ? (
                   <div className="space-y-3">
-                    <Textarea
-                      value={bio}
-                      onChange={(e) => setBio(e.target.value)}
-                      rows={4}
-                      className="resize-none border-none bg-white/20 text-white placeholder:text-white/50"
-                      placeholder="Tell us about yourself..."
-                      disabled={isPending}
-                    />
+                    <div>
+                      <label className="text-sm text-indigo-200 block mb-1">Batch (Graduation Year)</label>
+                      <Input
+                        value={batch}
+                        onChange={(e) => setBatch(e.target.value)}
+                        className="border-none bg-white/20 text-white placeholder:text-white/50"
+                        placeholder="e.g., 2023"
+                        disabled={isPending}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm text-indigo-200 block mb-1">Degree/Program</label>
+                      <Input
+                        value={degree}
+                        onChange={(e) => setDegree(e.target.value)}
+                        className="border-none bg-white/20 text-white placeholder:text-white/50"
+                        placeholder="e.g., BS Computer Science"
+                        disabled={isPending}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm text-indigo-200 block mb-1">Bio</label>
+                      <Textarea
+                        value={bio}
+                        onChange={(e) => setBio(e.target.value)}
+                        rows={4}
+                        className="resize-none border-none bg-white/20 text-white placeholder:text-white/50"
+                        placeholder="Tell us about yourself..."
+                        disabled={isPending}
+                      />
+                    </div>
                     <div className="flex gap-2">
                       <Button
                         onClick={handleSave}

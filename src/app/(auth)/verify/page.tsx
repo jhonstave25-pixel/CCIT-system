@@ -199,15 +199,15 @@ export default function VerifyPage() {
 
   if (!email) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-950 dark:via-indigo-950 dark:to-purple-950 p-4">
-        <Card className="w-full max-w-md rounded-2xl shadow-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800 dark:from-slate-900 dark:via-indigo-950 dark:to-purple-950 p-4">
+        <Card className="w-full max-w-md rounded-2xl shadow-lg border border-gray-200 dark:border-indigo-800/30 bg-white dark:bg-indigo-950/30">
           <CardHeader>
             <CardTitle>Email Required</CardTitle>
             <CardDescription>Please go back and enter your email first.</CardDescription>
           </CardHeader>
           <CardContent>
             <Link href="/login">
-              <Button className="w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-violet-500 text-white hover:opacity-95 shadow-md">Back to Login</Button>
+              <Button className="w-full bg-gradient-to-r from-indigo-600 via-purple-600 text-indigo-200 text-white hover:opacity-95 shadow-md">Back to Login</Button>
             </Link>
           </CardContent>
         </Card>
@@ -216,10 +216,10 @@ export default function VerifyPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-950 dark:via-indigo-950 dark:to-purple-950 p-4">
-      <Card className="w-full max-w-md rounded-2xl shadow-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 animate-in slide-in-from-bottom-5 duration-500">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800 dark:from-slate-900 dark:via-indigo-950 dark:to-purple-950 p-4">
+      <Card className="w-full max-w-md rounded-2xl shadow-lg border border-gray-200 dark:border-indigo-800/30 bg-white dark:bg-indigo-950/30 animate-in slide-in-from-bottom-5 duration-500">
         <CardHeader className="space-y-1 pb-4">
-          <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-violet-500 -m-6 mb-4 p-6 rounded-t-2xl">
+          <div className="bg-gradient-to-r from-indigo-600 via-purple-600 text-indigo-200 -m-6 mb-4 p-6 rounded-t-2xl">
             <CardTitle className="text-2xl font-bold text-white text-center">
               Verify Your Email
             </CardTitle>

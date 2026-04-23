@@ -110,8 +110,8 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
               </div>
               {job.salaryRange && (
                 <div className="flex items-center gap-2">
-                  <DollarSign className="w-4 h-4" />
-                  <span>{job.salaryRange}</span>
+                  <span className="text-lg font-bold">₱</span>
+                  <span>{job.salaryRange.replace(/\$/g, "₱")}</span>
                 </div>
               )}
             </div>

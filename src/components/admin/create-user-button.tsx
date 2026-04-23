@@ -22,12 +22,29 @@ import {
 } from "@/components/ui/select"
 import { createUser } from "@/actions/admin.actions"
 
-export function CreateUserButton() {
+interface CreateUserButtonProps {
+  prefilledData?: {
+    name?: string
+    email?: string
+    role?: "ALUMNI" | "FACULTY" | "ADMIN"
+  }
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+}
+
+export function CreateUserButton({ 
+  prefilledData, 
+  open: controlledOpen, 
+  onOpenChange 
+}: CreateUserButtonProps = {}) {
   const { data: session } = useSession()
-  const [open, setOpen] = useState(false)
+  const [internalOpen, setInternalOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
+  
+  const isOpen = controlledOpen !== undefined ? controlledOpen : internalOpen
+  const setOpen = onOpenChange || setInternalOpen
   
   // Only show for ADMIN
   if (!session || session.user.role !== "ADMIN") {
@@ -61,16 +78,16 @@ export function CreateUserButton() {
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={isOpen} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="bg-gradient-to-r from-indigo-500 to-violet-600 text-white">
           Create User
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 border-slate-700">
         <DialogHeader>
-          <DialogTitle>Create New User</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-white">Create New User</DialogTitle>
+          <DialogDescription className="text-slate-300">
             Create a new user account. They will need to verify their email with OTP.
           </DialogDescription>
         </DialogHeader>
@@ -86,17 +103,30 @@ export function CreateUserButton() {
             </div>
           )}
           <div>
-            <Label htmlFor="name">Full Name</Label>
-            <Input id="name" name="name" required />
+            <Label htmlFor="name" className="text-white">Full Name</Label>
+            <Input 
+              id="name" 
+              name="name" 
+              defaultValue={prefilledData?.name || ""}
+              required 
+              className="bg-slate-900 text-white border-slate-600 placeholder-slate-400"
+            />
           </div>
           <div>
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" name="email" type="email" required />
+            <Label htmlFor="email" className="text-white">Email</Label>
+            <Input 
+              id="email" 
+              name="email" 
+              type="email" 
+              defaultValue={prefilledData?.email || ""}
+              required 
+              className="bg-slate-900 text-white border-slate-600 placeholder-slate-400"
+            />
           </div>
           <div>
-            <Label htmlFor="role">Role</Label>
-            <Select name="role" defaultValue="ALUMNI">
-              <SelectTrigger>
+            <Label htmlFor="role" className="text-white">Role</Label>
+            <Select name="role" defaultValue={prefilledData?.role || "ALUMNI"}>
+              <SelectTrigger className="bg-slate-900 text-white border-slate-600">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -106,7 +136,7 @@ export function CreateUserButton() {
               </SelectContent>
             </Select>
           </div>
-          <Button type="submit" className="w-full" disabled={isLoading}>
+          <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold" disabled={isLoading}>
             {isLoading ? "Creating..." : "Create User"}
           </Button>
         </form>

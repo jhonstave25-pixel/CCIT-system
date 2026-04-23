@@ -16,16 +16,16 @@ export default function Hero() {
     >
       {/* Static mesh gradient (removed expensive animation) */}
       <div className="pointer-events-none absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_center,black,transparent_65%)]">
-        <div className="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_40%,rgba(99,102,241,0.35),transparent_60%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_40%,rgba(79,70,229,0.35),transparent_60%)]" />
         {!reducedMotion && (
-          <div className="absolute -top-10 -right-10 h-80 w-80 rounded-full blur-3xl bg-fuchsia-600/20" />
+          <div className="absolute -top-10 -right-10 h-80 w-80 rounded-full blur-3xl bg-indigo-700/20" />
         )}
       </div>
 
       <div className="text-center space-y-6">
         <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-white animate-in fade-in slide-in-from-bottom-4 duration-300">
           Welcome to Your{" "}
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-fuchsia-300">
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 drop-shadow-[0_0_15px_rgba(129,140,248,0.5)]">
             Alumni Community
           </span>
         </h1>
@@ -33,7 +33,7 @@ export default function Hero() {
           Connect with graduates, explore opportunities, attend events, and grow your professional network.
         </p>
         <div className="flex items-center justify-center gap-3 animate-in fade-in slide-in-from-bottom-4 duration-300 delay-150">
-          <Link href="/register">
+          <Link href="/request-account">
             <Button size="lg" className={primaryBtn + " rounded-xl px-6"}>Join Now</Button>
           </Link>
           <Link href="/login">

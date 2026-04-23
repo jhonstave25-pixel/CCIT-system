@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -44,22 +44,7 @@ export function RecommendationsManager({ jobId, jobTitle }: RecommendationsManag
   const [selectedRec, setSelectedRec] = useState<Recommendation | null>(null)
   const [processing, setProcessing] = useState<string | null>(null)
 
-  useEffect(() => {
-    loadRecommendations()
-  }, [jobId])
-
-  // Subscribe to Ably channels for real-time recommendation updates
-  useAblyChannel(
-    ABLY_CHANNELS.JOBS_ACTIVE,
-    ABLY_EVENTS.JOB_UPDATED,
-    (data: any) => {
-      if (data.jobId === jobId) {
-        loadRecommendations()
-      }
-    }
-  )
-
-  async function loadRecommendations() {
+  const loadRecommendations = useCallback(async () => {
     setLoading(true)
     try {
       const res = await fetch(`/api/recommendations?jobId=${jobId}`)
@@ -75,7 +60,24 @@ export function RecommendationsManager({ jobId, jobTitle }: RecommendationsManag
     } finally {
       setLoading(false)
     }
-  }
+  }, [jobId, toast])
+
+  useEffect(() => {
+    loadRecommendations()
+  }, [loadRecommendations])
+
+  // Subscribe to Ably channels for real-time recommendation updates
+  useAblyChannel(
+    ABLY_CHANNELS.JOBS_ACTIVE,
+    ABLY_EVENTS.JOB_UPDATED,
+    (data: any) => {
+      if (data.jobId === jobId) {
+        loadRecommendations()
+      }
+    }
+  )
+
+  
 
   async function handleStatusUpdate(recommendationId: string, status: "ACCEPTED" | "REJECTED") {
     setProcessing(recommendationId)
